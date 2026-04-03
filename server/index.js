@@ -1,15 +1,21 @@
-import express from "express";
+import express from "express"
+import cors from "cors"
+import StoresRouter from "./routes/stores/stores.router.js"
+import ProductsRouter from "./routes/products/products.router.js"
+import OrdersRouter from "./routes/orders/orders.router.js"
+import DriversRouter from "./routes/drivers/drivers.router.js"
 
-const app = express();
+const PORT = 8080
+const app = express()
 
-app.use(express.json());
-app.get('/', (request, response)=>{
-    response.send({message: 'Hello world'});
-});
+app.use(cors())
+app.use(express.json())
 
-app.post('/', (request, response)=>{
-    console.log(request.body);
-    response.end();
-});
+app.use("/stores", StoresRouter)
+app.use("/products", ProductsRouter)
+app.use("/orders", OrdersRouter)
+app.use("/drivers", DriversRouter)
 
-app.listen(8080);
+app.listen(PORT, () => {
+    console.log("Servidor corriendo en puerto:", PORT)
+})
