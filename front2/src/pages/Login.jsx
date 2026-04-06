@@ -60,7 +60,7 @@ function Login() {
               placeholder="tu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-400"
+              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none"
             />
           </div>
           <div>
@@ -70,7 +70,7 @@ function Login() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-400"
+              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none"
             />
           </div>
           <button
