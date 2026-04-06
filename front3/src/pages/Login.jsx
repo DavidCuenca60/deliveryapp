@@ -28,22 +28,22 @@ function Login() {
       .eq("id", data.user.id)
       .single()
 
-    if (profile?.role !== "store_admin") {
+    if (profile?.role !== "driver") {
       await supabase.auth.signOut()
-      setError("No tienes permisos de administrador")
+      setError("No tienes permisos de repartidor")
       setLoading(false)
       return
     }
 
-    navigate("/dashboard")
+    navigate("/orders")
   }
 
   return (
-    <div className="min-h-screen bg-green-50 flex items-center justify-center">
-      <div className="bg-white p-8 w-full max-w-md">
+    <div className="min-h-screen bg-pink-50 flex items-center justify-center">
+      <div className="bg-white p-8  w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-green-600">Tienda</h1>
-          <p className="text-gray-500 mt-2">Panel de administrador</p>
+          <h1 className="text-4xl font-bold text-purple-600">Repartidor</h1>
+          <p className="text-gray-500 mt-2">Panel de entregas</p>
         </div>
 
         {error && (
@@ -60,7 +60,7 @@ function Login() {
               placeholder="tu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-400"
+              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none"
             />
           </div>
           <div>
@@ -70,13 +70,13 @@ function Login() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-blue-400"
+              className="w-full mt-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition mt-2"
+            className="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold hover:bg-purple-700 transition mt-2"
           >
             {loading ? "Cargando..." : "Ingresar"}
           </button>

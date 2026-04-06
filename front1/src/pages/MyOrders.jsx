@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { getOrders } from "../services/api"
+import { supabase } from "../supabase"
 
 function MyOrders() {
   const navigate = useNavigate()
@@ -8,9 +9,13 @@ function MyOrders() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    getOrders().then((data) => {
-      setOrders(data)
-      setLoading(false)
+    supabase.auth.getUser().then(({ data }) => {
+      const userId = data.user?.id
+      getOrders().then((allOrders) => {
+        const myOrders = allOrders.filter((o) => o.user_id === userId)
+        setOrders(myOrders)
+        setLoading(false)
+      })
     })
   }, [])
 
@@ -35,12 +40,12 @@ function MyOrders() {
   }
 
   return (
-    <div className="min-h-screen bg-orange-50">
+    <div className="min-h-screen bg-blue-50">
 
-      {/* Header */}
-      <div className="bg-white shadow-sm px-6 py-4 flex items-center gap-4">
-        <button onClick={() => navigate("/home")} className="text-orange-500 text-xl">←</button>
-        <h1 className="text-xl font-bold text-gray-800">📦 Mis órdenes</h1>
+      
+      <div className="bg-white px-6 py-4 flex items-center gap-4">
+        <button onClick={() => navigate("/home")} className="text-xl">←</button>
+        <h1 className="text-xl font-bold text-gray-800">Mis órdenes</h1>
       </div>
 
       <div className="px-6 py-6 flex flex-col gap-4">
@@ -52,19 +57,19 @@ function MyOrders() {
             <p className="text-gray-500 font-medium">No tienes órdenes aún</p>
             <button
               onClick={() => navigate("/home")}
-              className="mt-4 bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition"
+              className="mt-4 bg-blue-500 text-white px-6 py-3 font-semibold hover:bg-blue-600 transition"
             >
               Hacer un pedido
             </button>
           </div>
         ) : (
           orders.map((order) => (
-            <div key={order.id} className="bg-white rounded-2xl shadow p-5">
+            <div key={order.id} className="bg-white  shadow p-5">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-gray-400 text-xs">Orden #{order.id}</p>
-                  <p className="font-bold text-gray-800 mt-1">📍 {order.address}</p>
-                  <p className="text-gray-500 text-sm mt-1">💳 {order.payment_method}</p>
+                  <p className="font-bold text-gray-800 mt-1"> {order.address}</p>
+                  <p className="text-gray-500 text-sm mt-1"> {order.payment_method}</p>
                 </div>
                 <span className={`text-xs font-semibold px-3 py-1 rounded-full ${getStatusColor(order.status)}`}>
                   {getStatusLabel(order.status)}
@@ -72,7 +77,7 @@ function MyOrders() {
               </div>
               <div className="border-t border-gray-100 mt-3 pt-3 flex justify-between">
                 <p className="text-gray-500 text-sm">Total</p>
-                <p className="text-orange-500 font-bold">${Number(order.total).toLocaleString()}</p>
+                <p className="text-blue-500 font-bold">${Number(order.total).toLocaleString()}</p>
               </div>
             </div>
           ))
